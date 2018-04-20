@@ -206,5 +206,6 @@
 
 ### Habilitando rewrite do apache
 
-> sudo a2enmod rewrite
-> sudo service apache2 restart
+> sudo a2enmod rewrite;
+
+> sudo service apache2 restart;
