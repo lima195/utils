@@ -8,6 +8,7 @@ git_repo_docker="git@github.com:lima195/magento2-docker.git"
 git_repo_magento="git@github.com:lima195/magento2-store.git"
 git_repo_module="git@github.com:lima195/lima-newsletter.git"
 
+sudo mkdir /var/www/;
 sudo chown $USER: /var/www/;
 project_dir='magento_test'
 project_path='/var/www/'${project_dir}
