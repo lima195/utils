@@ -36,9 +36,6 @@ cd ${project_dir}/docker-magento2;
 echo "${color_green}Installing Docker Environment${color_empty}";
 sudo docker-compose up -d --build;
 
-echo "${color_green}Populating DB${color_empty}";
-sudo docker exec -ti docker-magento2_web_1 sh -c "mysql -u magento -pmagento -h 172.22.0.110 magento < cd /var/www/html/mysql_dumps/magento.sql";
-
 echo "${color_green}Installing missing php extension${color_empty}";
 sudo docker exec -ti docker-magento2_web_1 sh -c "docker-php-ext-install bcmath;";
 
@@ -47,6 +44,10 @@ sudo docker exec -ti docker-magento2_web_1 sh -c "/etc/init.d/apache2 reload";
 
 echo "${color_green}Composer install${color_empty}";
 sudo docker exec -ti docker-magento2_web_1 sh -c "cd /var/www/html; composer install;";
+
+echo "${color_green}Populating DB${color_empty}";
+sudo docker exec -ti docker-magento2_web_1 sh -c "mysql -u magento -pmagento -h 172.22.0.110 magento < /var/www/html/mysql_dumps/magento.sql -P 3306";
+# mysql -u magento -pmagento -h 172.22.0.110 magento < magento_test/magento2/mysql_dumps/magento.sql -P 3306
 
 echo "${color_green}Magento setup:upgrade${color_empty}";
 sudo docker exec -ti docker-magento2_web_1 sh -c "cd /var/www/html; bin/magento setup:upgrade;";
@@ -60,7 +61,10 @@ sudo -- sh -c "echo '172.22.0.105 local.magento.com' >> /etc/hosts";
 echo "${color_green}Done! You can access the magento project on: http://local.magento.com/${color_empty}";
 
 # show db ip
-# docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' docker-magento2_db_1
+# docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' docker-magento2_db_1;
+# docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' docker-magento2_mail_1;
+# docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' docker-magento2_redis_1;
+# docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' docker-magento2_web_1;
 
 # exec apache_php docker
 # docker exec -ti docker-magento2_web_1 bash
