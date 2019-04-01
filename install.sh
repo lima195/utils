@@ -58,6 +58,12 @@ sudo docker exec -ti docker-magento2_web_1 sh -c "cd /var/www/html; set-permissi
 echo "${color_green}Add docker apache IP to hosts${color_empty}";
 sudo -- sh -c "echo '172.22.0.105 local.magento.com' >> /etc/hosts";
 
+echo "${color_green}Setting Magento to production mode${color_empty}";
+sudo docker exec -ti docker-magento2_web_1 sh -c "cd /var/www/html; bin/magento deploy:mode:set production";
+
+echo "${color_green}Fixing Permissions${color_empty}";
+sudo docker exec -ti docker-magento2_web_1 sh -c "cd /var/www/html; set-permissions";
+
 echo "${color_green}Done! You can access the magento project on: http://local.magento.com/${color_empty}";
 
 # show db ip
